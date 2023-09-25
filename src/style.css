@@ -1,0 +1,95 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto";
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+
+.commands {
+  cursor: pointer;
+  overflow: hidden;
+  position: absolute;
+  height: 44px;
+  width: 220px;
+  transition: width 0.5s, height 0.1s, border-radius 1s;
+  background-color: #073b4c;
+  color: #ffd166;
+  border-radius: 4px;
+  border: 1px solid #ffd166;
+}
+
+.commands:hover {
+  height: 100vh;
+  width: 402px;
+  top: 0;
+  left: 0;
+  border-radius: 0;
+  overflow: scroll;
+  border: none;
+}
+
+.commands-btn {
+  position: fixed;
+  font-size: 20px;
+  padding: 10px 0px;
+  background-color: #073b4c;
+  border-radius: 4px;
+  text-align: center;
+  width: inherit;
+  display: flex;
+  justify-content: center;
+  align-item: center;
+}
+
+.category {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 10px;
+  font-size: 20px;
+  margin: 50px 20px;
+}
+
+.key-command,
+.key-title {
+  display: flex;
+  align-items: center;
+}
+
+.key-command {
+  gap: 15px;
+}
+
+.key-title {
+  font-size: 30px;
+}
+
+.key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #ffd166;
+  border-radius: 8px;
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.slash {
+  font-size: 30px;
+}
+
+.material-symbols-outlined {
+  margin-right: 5px;
+}
