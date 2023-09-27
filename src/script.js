@@ -34,12 +34,12 @@ const scene = new THREE.Scene();
 
 // Objects
 const box = new RoundedBoxGeometry(1, 1, 1, 10, 0.1);
-const rightMaterial = new THREE.MeshBasicMaterial({ color: "red" });
-const leftMaterial = new THREE.MeshBasicMaterial({ color: "orange" });
-const upMaterial = new THREE.MeshBasicMaterial({ color: "white" });
-const downMaterial = new THREE.MeshBasicMaterial({ color: "yellow" });
-const frontMaterial = new THREE.MeshBasicMaterial({ color: "limegreen" });
-const backMaterial = new THREE.MeshBasicMaterial({ color: "blue" });
+const rightMaterial = new THREE.MeshStandardMaterial({ color: "red" });
+const leftMaterial = new THREE.MeshStandardMaterial({ color: "orange" });
+const upMaterial = new THREE.MeshStandardMaterial({ color: "white" });
+const downMaterial = new THREE.MeshStandardMaterial({ color: "yellow" });
+const frontMaterial = new THREE.MeshStandardMaterial({ color: "limegreen" });
+const backMaterial = new THREE.MeshStandardMaterial({ color: "blue" });
 
 const cubes = [];
 for (let i = 0; i < 27; i++) {
@@ -97,6 +97,14 @@ window.addEventListener("keydown", (e) => {
   });
 });
 
+// Lights
+const ambientLight = new THREE.AmbientLight("white", 0.5);
+scene.add(ambientLight);
+
+const directionLight = new THREE.DirectionalLight("white", 0.7);
+directionLight.position.set(0.5, 1, 1);
+scene.add(directionLight);
+
 // Camera
 const camera = new THREE.PerspectiveCamera(55, sizes.width / sizes.height);
 camera.position.set(5, 5, 5);
@@ -107,6 +115,7 @@ const canvas = document.querySelector("canvas.webgl");
 const controls = new OrbitControls(camera, canvas);
 
 controls.enablePan = false;
+controls.enableZoom = true;
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -115,6 +124,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x00002b);
 
 // Animations
 function tick() {
