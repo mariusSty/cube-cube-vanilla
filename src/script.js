@@ -163,11 +163,11 @@ window.addEventListener("keydown", (e) => {
 
   let key;
   if (e.shiftKey) {
-    key = shiftKeysBinding.get(e.code);
+    key = shiftKeysBinding.get(e.key);
   } else if (e.ctrlKey) {
-    key = ctrlKeysBinding.get(e.code);
+    key = ctrlKeysBinding.get(e.key);
   } else {
-    key = keysBinding.get(e.code);
+    key = keysBinding.get(e.key);
   }
 
   if (!key) return;

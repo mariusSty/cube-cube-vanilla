@@ -1,31 +1,31 @@
 export const keysBinding = new Map([
-  ["KeyU", "U"],
-  ["KeyD", "D"],
-  ["KeyR", "R"],
-  ["KeyL", "L"],
-  ["KeyF", "F"],
-  ["KeyB", "B"],
-  ["KeyM", "M"],
-  ["KeyE", "E"],
-  ["KeyS", "S"],
+  ["u", "U"],
+  ["d", "D"],
+  ["r", "R"],
+  ["l", "L"],
+  ["f", "F"],
+  ["b", "B"],
+  ["m", "M"],
+  ["e", "E"],
+  ["s", "S"],
 ]);
 
 export const shiftKeysBinding = new Map([
-  ["KeyU", "U'"],
-  ["KeyD", "D'"],
-  ["KeyR", "R'"],
-  ["KeyL", "L'"],
-  ["KeyF", "F'"],
-  ["KeyB", "B'"],
+  ["U", "U'"],
+  ["D", "D'"],
+  ["R", "R'"],
+  ["L", "L'"],
+  ["F", "F'"],
+  ["B", "B'"],
 ]);
 
 export const ctrlKeysBinding = new Map([
-  ["KeyU", "u"],
-  ["KeyD", "d"],
-  ["KeyR", "r"],
-  ["KeyL", "l"],
-  ["KeyF", "f"],
-  ["KeyB", "b"],
+  ["u", "u"],
+  ["d", "d"],
+  ["r", "r"],
+  ["l", "l"],
+  ["f", "f"],
+  ["b", "b"],
 ]);
 
 export const movements = new Map([
@@ -80,7 +80,7 @@ export const movements = new Map([
   [
     "M",
     {
-      cubesNeedRotation: (position, distance) => Maths.round(position.x) == 0,
+      cubesNeedRotation: (position, distance) => Math.round(position.x) == 0,
       rotation: (rotation) => ({ x: rotation.x - Math.PI * 0.5 }),
     },
   ],
