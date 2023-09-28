@@ -32,28 +32,30 @@ window.addEventListener("resize", () => {
 // Scene
 const scene = new THREE.Scene();
 
-// Objects
+// Geometries
 const box = new RoundedBoxGeometry(1, 1, 1, 10, 0.1);
+const colorFace = new THREE.PlaneGeometry(0.8, 0.8);
+const mirrorFace = new THREE.PlaneGeometry(1, 1);
+
+// Materials
 const rightMaterial = new THREE.MeshBasicMaterial({ color: "red" });
 const leftMaterial = new THREE.MeshBasicMaterial({ color: "orange" });
 const upMaterial = new THREE.MeshBasicMaterial({ color: "white" });
 const downMaterial = new THREE.MeshBasicMaterial({ color: "yellow" });
 const frontMaterial = new THREE.MeshBasicMaterial({ color: "limegreen" });
 const backMaterial = new THREE.MeshBasicMaterial({ color: "blue" });
-const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
-const face = new THREE.PlaneGeometry(0.8, 0.8);
-const mirrorFace = new THREE.PlaneGeometry(1, 1);
-const cubes = [];
+const backGroundMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
 
+const cubes = [];
 for (let i = 0; i < 27; i++) {
   const cube = new THREE.Group();
-  const mesh = new THREE.Mesh(box, material);
-  const rightMesh = new THREE.Mesh(face, rightMaterial);
-  const leftMesh = new THREE.Mesh(face, leftMaterial);
-  const upMesh = new THREE.Mesh(face, upMaterial);
-  const downMesh = new THREE.Mesh(face, downMaterial);
-  const backMesh = new THREE.Mesh(face, backMaterial);
-  const frontMesh = new THREE.Mesh(face, frontMaterial);
+  const mesh = new THREE.Mesh(box, backGroundMaterial);
+  const rightMesh = new THREE.Mesh(colorFace, rightMaterial);
+  const leftMesh = new THREE.Mesh(colorFace, leftMaterial);
+  const upMesh = new THREE.Mesh(colorFace, upMaterial);
+  const downMesh = new THREE.Mesh(colorFace, downMaterial);
+  const backMesh = new THREE.Mesh(colorFace, backMaterial);
+  const frontMesh = new THREE.Mesh(colorFace, frontMaterial);
   cube.position.set(...(i >>> 0).toString(3).padStart(3, "0"));
   cube.position.x -= 1;
   cube.position.y -= 1;
@@ -74,113 +76,50 @@ for (let i = 0; i < 27; i++) {
   scene.add(cube);
 }
 
-const rightMirror = new THREE.Group();
-for (let i = 0; i < 9; i++) {
-  const mirror = new THREE.Group();
-  const mesh = new THREE.Mesh(mirrorFace, material);
-  const rightMesh = new THREE.Mesh(face, rightMaterial);
-  mirror.position.x = (i % 3) - 1;
-  mirror.position.y = (i - (i % 3)) / 3 - 1;
-  rightMesh.position.z += 0.01;
-  mirror.add(mesh, rightMesh);
-  rightMirror.add(mirror);
-}
-rightMirror.rotation.y -= Math.PI * 0.5;
-rightMirror.position.x += 4;
-scene.add(rightMirror);
+const distance = 4;
+const colorMaterials = [
+  leftMaterial,
+  rightMaterial,
+  downMaterial,
+  upMaterial,
+  backMaterial,
+  frontMaterial,
+];
 
-const leftMirror = new THREE.Group();
-for (let i = 0; i < 9; i++) {
-  const mirror = new THREE.Group();
-  const mesh = new THREE.Mesh(mirrorFace, material);
-  const leftMesh = new THREE.Mesh(face, leftMaterial);
-  mirror.position.x = (i % 3) - 1;
-  mirror.position.y = (i - (i % 3)) / 3 - 1;
-  leftMesh.position.z += 0.01;
-  mirror.add(mesh, leftMesh);
-  leftMirror.add(mirror);
-}
-leftMirror.rotation.y += Math.PI * 0.5;
-leftMirror.position.x -= 4;
-scene.add(leftMirror);
+const mirrorPositions = [
+  [-distance, 0, 0],
+  [distance, 0, 0],
+  [0, -distance, 0],
+  [0, distance, 0],
+  [0, 0, -distance],
+  [0, 0, distance],
+];
 
-const frontMirror = new THREE.Group();
-for (let i = 0; i < 9; i++) {
+const mirrorFaces = [];
+for (let i = 0; i < 6; i++) {
   const mirror = new THREE.Group();
-  const mesh = new THREE.Mesh(mirrorFace, material);
-  const frontMesh = new THREE.Mesh(face, frontMaterial);
-  mirror.position.x = i % 3;
-  mirror.position.y = (i - (i % 3)) / 3;
-  frontMesh.position.z += 0.01;
-  mirror.add(mesh, frontMesh);
-  frontMirror.add(mirror);
-}
-frontMirror.rotation.x += Math.PI;
-frontMirror.position.x -= 1;
-frontMirror.position.y += 1;
-frontMirror.position.z += 4;
-scene.add(frontMirror);
-
-const backMirror = new THREE.Group();
-for (let i = 0; i < 9; i++) {
-  const mirror = new THREE.Group();
-  const mesh = new THREE.Mesh(mirrorFace, material);
-  const backMesh = new THREE.Mesh(face, backMaterial);
-  mirror.position.x = i % 3;
-  mirror.position.y = (i - (i % 3)) / 3;
-  backMesh.position.z += 0.01;
-  mirror.add(mesh, backMesh);
-  backMirror.add(mirror);
+  for (let j = 0; j < 9; j++) {
+    const face = new THREE.Group();
+    const bgMesh = new THREE.Mesh(mirrorFace, backGroundMaterial);
+    const colorMesh = new THREE.Mesh(colorFace, colorMaterials[i]);
+    face.position.x = (j % 3) - 1;
+    face.position.y = (j - (j % 3)) / 3 - 1;
+    colorMesh.position.z += 0.01;
+    face.add(bgMesh, colorMesh);
+    mirror.add(face);
+    mirrorFaces.push(face);
+  }
+  mirror.position.set(...mirrorPositions[i]);
+  mirror.lookAt(0, 0, 0);
+  scene.add(mirror);
 }
 
-backMirror.position.x -= 1;
-backMirror.position.y -= 1;
-backMirror.position.z -= 4;
-scene.add(backMirror);
-
-const upMirror = new THREE.Group();
-for (let i = 0; i < 9; i++) {
-  const mirror = new THREE.Group();
-  const mesh = new THREE.Mesh(mirrorFace, material);
-  const upMesh = new THREE.Mesh(face, upMaterial);
-  mirror.position.x = i % 3;
-  mirror.position.y = (i - (i % 3)) / 3;
-  upMesh.position.z += 0.01;
-  mirror.add(mesh, upMesh);
-  upMirror.add(mirror);
-}
-
-upMirror.rotation.x += Math.PI * 0.5;
-upMirror.position.x -= 1;
-upMirror.position.y += 4;
-upMirror.position.z -= 1;
-scene.add(upMirror);
-
-const downMirror = new THREE.Group();
-for (let i = 0; i < 9; i++) {
-  const mirror = new THREE.Group();
-  const mesh = new THREE.Mesh(mirrorFace, material);
-  const downMesh = new THREE.Mesh(face, downMaterial);
-  mirror.position.x = i % 3;
-  mirror.position.y = (i - (i % 3)) / 3;
-  downMesh.position.z += 0.01;
-  mirror.add(mesh, downMesh);
-  downMirror.add(mirror);
-}
-
-downMirror.rotation.x -= Math.PI * 0.5;
-downMirror.position.x -= 1;
-downMirror.position.y -= 4;
-downMirror.position.z += 1;
-scene.add(downMirror);
+mirrorFaces.map((m) => scene.attach(m));
 
 let isAnimate = false;
 let general = { animationDuration: 0.3 };
 window.addEventListener("keydown", (e) => {
   if (isAnimate) return;
-
-  const group = new THREE.Group();
-  scene.add(group);
 
   let key;
   if (e.shiftKey) {
@@ -192,9 +131,12 @@ window.addEventListener("keydown", (e) => {
   }
 
   if (!key) return;
+
+  const group = new THREE.Group();
+  scene.add(group);
   const movement = movements.get(key);
-  const haveToRotate = cubes.filter((cube) =>
-    movement.cubesNeedRotation(cube.position)
+  const haveToRotate = [...cubes, ...mirrorFaces].filter((cube) =>
+    movement.cubesNeedRotation(cube.position, distance)
   );
 
   haveToRotate.map((cube) => group.attach(cube));
